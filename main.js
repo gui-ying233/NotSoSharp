@@ -15,29 +15,38 @@
 		document.documentElement.textContent.includes("\u266F") &&
 		document.documentElement.innerText.includes("\u266F")
 	) {
-		let pageName = mw.config.get("wgPageName");
+		let pageName = "";
+		switch (mw.config.get("wgNamespaceNumber")) {
+			case 2:
+			case 3:
+				pageName = wgULS("用户", "用戶");
+				break;
+			case 10:
+			case 11:
+				pageName = "模板";
+				break;
+			case 14:
+			case 15:
+				pageName = wgULS("分类", "分類");
+				break;
+			default:
+				break;
+		}
 		switch (mw.config.get("wgNamespaceNumber")) {
 			case 1:
-				pageName = pageName.replace("Talk", wgULS("讨论", "討論"));
 			case 3:
 			case 5:
 			case 9:
 			case 11:
 			case 13:
 			case 15:
-				pageName = pageName.replace("_talk", wgULS("讨论", "討論"));
-			case 2:
-			case 3:
-				pageName = pageName.replace("User", wgULS("用户", "用戶"));
-			case 10:
-			case 11:
-				pageName = pageName.replace("Template", "模板");
-			case 14:
-			case 15:
-				pageName = pageName.replace("Category", wgULS("分类", "分類"));
+				pageName += wgULS("讨论", "討論");
+				break;
 			default:
 				break;
 		}
+		pageName += `:${mw.config.get("wgTitle")}`;
+		console.log(pageName);
 		function r(a, b, c = pageName) {
 			if (a[b].includes("\u266F")) {
 				a[b] = c;
