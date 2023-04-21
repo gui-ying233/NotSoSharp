@@ -1,0 +1,101 @@
+// ==UserScript==
+// @name         NotSoSharp
+// @namespace    http://tampermonkey.net/
+// @version      1.0.0
+// @description  尝试还原萌百部分一方通行所屏蔽的内容
+// @author       鬼影233
+// @match        *.moegirl.org.cn/*
+// @icon         https://img.moegirl.org.cn/common/b/b7/%E5%A4%A7%E8%90%8C%E5%AD%97.svg
+// @grant        none
+// ==/UserScript==
+
+(function () {
+	"use strict";
+	if (
+		document.documentElement.textContent.includes("\u266F") &&
+		document.documentElement.innerText.includes("\u266F")
+	) {
+		let pageName = mw.config.get("wgPageName");
+		switch (mw.config.get("wgNamespaceNumber")) {
+			case 1:
+				pageName = pageName.replace("Talk", wgULS("讨论", "討論"));
+			case 3:
+			case 5:
+			case 9:
+			case 11:
+			case 13:
+			case 15:
+				pageName = pageName.replace("_talk", wgULS("讨论", "討論"));
+			case 2:
+			case 3:
+				pageName = pageName.replace("User", wgULS("用户", "用戶"));
+			case 10:
+			case 11:
+				pageName = pageName.replace("Template", "模板");
+			case 14:
+			case 15:
+				pageName = pageName.replace("Category", wgULS("分类", "分類"));
+			default:
+				break;
+		}
+		function r(a, b, c = pageName) {
+			if (a[b].includes("\u266F")) {
+				a[b] = c;
+			}
+		}
+		r(document.getElementById("firstHeading"), "innerText");
+		r(document, "title", `${pageName} - 萌娘百科_万物皆可萌的百科全书`);
+		switch (mw.config.get("skin")) {
+			case "vector":
+				document.body.querySelectorAll(".toctext").forEach((e) => {
+					r(e, "innerText", decodeURI(e.parentElement.hash.slice(1)));
+				});
+				break;
+			case "moeskin":
+			default:
+				document.body
+					.querySelectorAll(".moe-toc-tree.root a.anchor-link")
+					.forEach((e) => {
+						r(e, "title", decodeURI(e.hash.replaceAll(".", "%")));
+					});
+				document.body
+					.querySelectorAll(
+						".moe-toc-tree.root a.anchor-link > .text"
+					)
+					.forEach((e) => {
+						r(
+							e,
+							"innerText",
+							decodeURI(
+								e.parentElement.hash.replaceAll(".", "%")
+							).slice(1)
+						);
+					});
+				break;
+		}
+		document.body.querySelectorAll(".mw-headline").forEach((e) => {
+			r(e, "innerText", decodeURI(e.id));
+		});
+		document.body.querySelectorAll("a:not(#catlinks a)").forEach((e) => {
+			if (
+				e.innerText.includes("\u266F") &&
+				new Set(e.innerHTML).size === 1
+			) {
+				e.innerText = decodeURI(e.pathname).slice(1);
+			} else if (
+				e.innerText.includes("\u266F") &&
+				e.classList.contains("mw-userlink")
+			) {
+				e.firstElementChild.innerText = e.getAttribute("data-username");
+			}
+		});
+		document.body.querySelectorAll("#catlinks a").forEach((e) => {
+			if (
+				e.innerText.includes("\u266F") &&
+				new Set(e.innerHTML).size === 1
+			) {
+				e.innerText = decodeURI(e.pathname).slice(10);
+			}
+		});
+	}
+})();
