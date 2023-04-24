@@ -46,8 +46,7 @@
 			default:
 				break;
 		}
-		pageName += `:${mw.config.get("wgTitle")}`;
-		console.log(pageName);
+		pageName += `${pageName ? ":" : ""}${mw.config.get("wgTitle")}`;
 		function r(a, b, c = pageName) {
 			if (a[b].includes("\u266F")) {
 				a[b] = c;
