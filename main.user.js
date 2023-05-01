@@ -90,7 +90,13 @@
 				e.innerText.includes("\u266F") &&
 				new Set(e.innerHTML).size === 1
 			) {
-				e.innerText = decodeURI(e.pathname).slice(1);
+				if (e.classList.contains("new")) {
+					e.innerText = decodeURI(
+						new URL($0).searchParams.get("title")
+					);
+				} else {
+					e.innerText = decodeURI(e.pathname).slice(1);
+				}
 			} else if (
 				e.innerText.includes("\u266F") &&
 				e.classList.contains("mw-userlink")
