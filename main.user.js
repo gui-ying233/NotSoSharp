@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
-// @version      1.0.0
+// @version      1.0.1
 // @description  尝试还原萌百部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
