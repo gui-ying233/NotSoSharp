@@ -99,7 +99,7 @@
 			) {
 				if (e.classList.contains("new")) {
 					e.innerText = decodeURI(
-						new URL($0).searchParams.get("title")
+						new URL(e).searchParams.get("title")
 					);
 				} else {
 					e.innerText = decodeURI(e.pathname).slice(1);
