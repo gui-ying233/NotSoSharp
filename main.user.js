@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
-// @version      1.0.1
+// @version      1.0.2
 // @description  尝试还原萌百部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
@@ -10,13 +10,20 @@
 // @supportURL   https://github.com/gui-ying233/NotSoSharp/issues
 // ==/UserScript==
 
-(function () {
+(async function () {
 	"use strict";
 	if (
 		document.documentElement.textContent.includes("\u266F") &&
 		document.documentElement.innerText.includes("\u266F")
 	) {
 		let pageName = "";
+		await new Promise((resolve) => {
+			setInterval(() => {
+				if (typeof mw !== "undefined" && typeof wgULS !== "undefined") {
+					resolve();
+				}
+			}, 50);
+		});
 		switch (mw.config.get("wgNamespaceNumber")) {
 			case 2:
 			case 3:
