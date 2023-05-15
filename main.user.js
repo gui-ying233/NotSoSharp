@@ -2,7 +2,7 @@
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
 // @version      1.0.2
-// @description  尝试还原萌百部分一方通行所屏蔽的内容
+// @description  尝试还原萌娘百科部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
 // @match        *.moegirl.org.cn/*
