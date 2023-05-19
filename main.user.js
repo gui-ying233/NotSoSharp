@@ -12,10 +12,7 @@
 
 (async function () {
 	"use strict";
-	if (
-		document.documentElement.textContent.includes("\u266F") &&
-		document.documentElement.innerText.includes("\u266F")
-	) {
+	if (document.documentElement.innerText.includes("\u266F")) {
 		let pageName = "";
 		await new Promise((resolve) => {
 			setInterval(() => {
