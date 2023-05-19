@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
-// @version      1.0.2
+// @version      1.1.0
 // @description  尝试还原萌娘百科部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
@@ -19,9 +19,14 @@
 		let pageName = "";
 		await new Promise((resolve) => {
 			setInterval(() => {
-				if (typeof mw !== "undefined" && typeof wgULS !== "undefined") {
-					resolve();
-				}
+				window.onload = (() => {
+					if (
+						typeof mw !== "undefined" &&
+						typeof wgULS !== "undefined"
+					) {
+						resolve();
+					}
+				})();
 			}, 50);
 		});
 		switch (mw.config.get("wgNamespaceNumber")) {
@@ -93,22 +98,17 @@
 			r(e, "innerText", decodeURI(e.id));
 		});
 		document.body.querySelectorAll("a:not(#catlinks a)").forEach((e) => {
-			if (
-				e.innerText.includes("\u266F") &&
-				new Set(e.innerHTML).size === 1
-			) {
-				if (e.classList.contains("new")) {
-					e.innerText = decodeURI(
-						new URL(e).searchParams.get("title")
-					);
-				} else {
-					e.innerText = decodeURI(e.pathname).slice(1);
+			if (e.innerText.includes("\u266F")) {
+				if (
+					new Set(e.innerHTML).size === 1 ||
+					e.classList.contains("mw-changeslist-title") ||
+					e.classList.contains("mw-userlink")
+				) {
+					e.innerText =
+						new URL(e).searchParams.get("title") ||
+						e.getAttribute("data-username") ||
+						decodeURI(e.pathname).slice(1);
 				}
-			} else if (
-				e.innerText.includes("\u266F") &&
-				e.classList.contains("mw-userlink")
-			) {
-				e.firstElementChild.innerText = e.getAttribute("data-username");
 			}
 		});
 		document.body.querySelectorAll("#catlinks a").forEach((e) => {
