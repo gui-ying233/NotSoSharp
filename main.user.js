@@ -5,7 +5,9 @@
 // @description  尝试还原萌娘百科部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
-// @match        *.moegirl.org.cn/*
+// @match        zh.moegirl.org.cn/*
+// @match        mzh.moegirl.org.cn/*
+// @match        mobile.moegirl.org.cn/*
 // @icon         https://img.moegirl.org.cn/common/b/b7/%E5%A4%A7%E8%90%8C%E5%AD%97.svg
 // @supportURL   https://github.com/gui-ying233/NotSoSharp/issues
 // ==/UserScript==
