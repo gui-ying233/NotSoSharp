@@ -16,15 +16,15 @@
 	"use strict";
 	if (document.documentElement.innerText.includes("\u266F")) {
 		let pageName = "";
-		await new Promise((resolve) => {
-			setInterval(() => {
+		await new Promise(resolve => {
+			const intervId = setInterval(() => {
 				window.onload = (() => {
 					if (
 						typeof mw !== "undefined" &&
 						typeof wgULS !== "undefined"
 					) {
+						clearInterval(intervId);
 						resolve();
-						return;
 					}
 				})();
 			}, 50);
@@ -68,7 +68,7 @@
 		r(document, "title", `${pageName} - 萌娘百科_万物皆可萌的百科全书`);
 		switch (mw.config.get("skin")) {
 			case "vector":
-				document.body.querySelectorAll(".toctext").forEach((e) => {
+				document.body.querySelectorAll(".toctext").forEach(e => {
 					r(e, "innerText", decodeURI(e.parentElement.hash.slice(1)));
 				});
 				break;
@@ -76,14 +76,14 @@
 			default:
 				document.body
 					.querySelectorAll(".moe-toc-tree.root a.anchor-link")
-					.forEach((e) => {
+					.forEach(e => {
 						r(e, "title", decodeURI(e.hash.replaceAll(".", "%")));
 					});
 				document.body
 					.querySelectorAll(
 						".moe-toc-tree.root a.anchor-link > .text"
 					)
-					.forEach((e) => {
+					.forEach(e => {
 						r(
 							e,
 							"innerText",
@@ -94,10 +94,10 @@
 					});
 				break;
 		}
-		document.body.querySelectorAll(".mw-headline").forEach((e) => {
+		document.body.querySelectorAll(".mw-headline").forEach(e => {
 			r(e, "innerText", decodeURI(e.id));
 		});
-		document.body.querySelectorAll("a:not(#catlinks a)").forEach((e) => {
+		document.body.querySelectorAll("a:not(#catlinks a)").forEach(e => {
 			if (e.innerText.includes("\u266F")) {
 				if (
 					new Set(e.innerHTML).size === 1 ||
@@ -111,7 +111,7 @@
 				}
 			}
 		});
-		document.body.querySelectorAll("#catlinks a").forEach((e) => {
+		document.body.querySelectorAll("#catlinks a").forEach(e => {
 			if (
 				e.innerText.includes("\u266F") &&
 				new Set(e.innerHTML).size === 1
