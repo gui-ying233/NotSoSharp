@@ -121,4 +121,29 @@
 		if (e.innerText.includes("\u266F") && new Set(e.innerHTML).size === 1)
 			e.innerText = decodeURI(e.pathname).slice(10);
 	});
+	document.body.getElementsByTagName("a").forEach(e => {
+		if (!e.innerHTML.includes("\u266F") || e.innerHTML !== e.innerText)
+			return;
+		let url;
+		switch (e.className) {
+			case "new":
+				url = new URL(e).searchParams.get("title");
+				break;
+			case "external":
+			case "external free":
+			case "external text":
+				url = e.href;
+				break;
+			default:
+				url = e.pathname.slice(1);
+				break;
+		}
+		url = decodeURI(url);
+		if (e.classList.contains("external")) url = url.replace(/\/$/, "");
+		if (url.length !== e.innerText.length) return;
+		const regexp = `${e.innerText
+			.replaceAll(".", "\\.")
+			.replaceAll("\u266F", ".")}`;
+		if (url.match(regexp)) e.innerText = url.match(regexp)[0];
+	});
 })();
