@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
-// @version      1.5.0
+// @version      1.5.1
 // @description  尝试还原萌娘百科部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
@@ -62,7 +62,7 @@
 	}
 	pageName += `${pageName ? ":" : ""}${mw.config.get("wgTitle")}`;
 	const r = (a, b, c = pageName) => {
-		if (a[b].includes("\u266F")) a[b] = c;
+		if (a[b].includes("\u266F") && a[b] !== "幻影异闻录♯FE") a[b] = c;
 	};
 	r(document.getElementById("firstHeading"), "innerText");
 	r(document, "title", `${pageName} - 萌娘百科_万物皆可萌的百科全书`);
