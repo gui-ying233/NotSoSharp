@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
-// @version      1.5.2
+// @version      1.5.3
 // @description  尝试还原萌娘百科部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
@@ -18,7 +18,7 @@
 	if (
 		new URLSearchParams(window.location.search).get("safemode") ||
 		document.currentScript ||
-		!document.documentElement.innerText.includes("\u266F")
+		!document.documentElement.textContent.includes("\u266F")
 	)
 		return;
 	let pageName = "";
