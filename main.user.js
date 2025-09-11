@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
-// @version      1.5.1
+// @version      1.5.2
 // @description  尝试还原萌娘百科部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
@@ -24,11 +24,9 @@
 	let pageName = "";
 	await new Promise(resolve => {
 		const intervId = setInterval(() => {
-			window.onload = (() => {
-				if ([typeof mw, typeof wgULS].includes("undefined")) return;
-				clearInterval(intervId);
-				resolve();
-			})();
+			if ([typeof mw, typeof wgULS].includes("undefined")) return;
+			clearInterval(intervId);
+			resolve();
 		}, 50);
 	});
 	switch (mw.config.get("wgNamespaceNumber")) {
