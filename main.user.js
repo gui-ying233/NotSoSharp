@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
-// @version      1.5.3
+// @version      1.5.4
 // @description  尝试还原萌娘百科部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
@@ -67,7 +67,7 @@
 	switch (mw.config.get("skin")) {
 		case "vector":
 			document.body
-				.querySelectorAll(".toctext")
+				.getElementsByClassName("toctext")
 				.forEach(e =>
 					r(e, "innerText", decodeURI(e.parentElement.hash.slice(1)))
 				);
@@ -93,7 +93,7 @@
 			break;
 	}
 	document.body
-		.querySelectorAll(".mw-headline")
+		.getElementsByClassName("mw-headline")
 		.forEach(e => r(e, "innerText", decodeURI(e.id)));
 	document.body.querySelectorAll("a:not(#catlinks a)").forEach(e => {
 		if (
@@ -107,7 +107,7 @@
 				e.getAttribute("data-username") ||
 				decodeURI(e.pathname).slice(1);
 	});
-	document.body.querySelectorAll(".mw-selflink").forEach(e => {
+	document.body.getElementsByClassName("mw-selflink").forEach(e => {
 		switch (e.innerHTML.length) {
 			case pageName.length:
 				r(e, "innerText");
@@ -122,8 +122,16 @@
 			e.innerText = decodeURI(e.pathname).slice(10);
 	});
 	document.body.getElementsByTagName("a").forEach(e => {
-		if (!e.innerHTML.includes("\u266F") || e.innerHTML !== e.innerText)
-			return;
+		if (!e.innerHTML.includes("\u266F")) return;
+		const file = e.querySelector("span.mw-file-element.mw-broken-media");
+		if (
+			e.classList.contains("new") &&
+			file?.textContent.includes("\u266F") &&
+			!e.title?.includes("\u266F") &&
+			e.title.length === file.textContent.length
+		)
+			return (file.textContent = e.title);
+		if (e.innerHTML !== e.innerText) return;
 		let url;
 		switch (e.className) {
 			case "new":
