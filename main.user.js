@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NotSoSharp
 // @namespace    https://github.com/gui-ying233/NotSoSharp
-// @version      1.6.0
+// @version      1.6.1
 // @description  尝试还原萌娘百科部分一方通行所屏蔽的内容
 // @author       鬼影233
 // @license      MIT
@@ -92,9 +92,20 @@
 				);
 			break;
 	}
-	document.body
-		.getElementsByClassName("mw-headline")
-		.forEach(e => r(e, "innerText", decodeURI(e.id)));
+	document.body.querySelectorAll(".mw-heading > [id]").forEach(e => {
+		if (
+			e.innerText.includes("\u266F") &&
+			e.innerText.length === e.id.length
+		)
+			e.childNodes.forEach(n => {
+				if (
+					n.nodeType === Node.TEXT_NODE &&
+					n.nodeValue.includes("\u266F") &&
+					n.nodeValue.length === e.id.length
+				)
+					n.nodeValue = e.id;
+			});
+	});
 	document.body.querySelectorAll("a:not(#catlinks a)").forEach(e => {
 		if (
 			e.innerText.includes("\u266F") &&
